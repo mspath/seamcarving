@@ -1,5 +1,6 @@
 package stage2
 
+import parseArgs
 import java.awt.Color
 import java.awt.image.BufferedImage
 import java.io.File
@@ -19,26 +20,11 @@ For simplicity, we will use only .png file format in this project. Your program 
 specified input image file, inverse colors and save the file to a given location.
  */
 
-fun parseArgs(args: Array<String>): Pair<String, String> {
-    var fileIn = ""
-    var fileOut = ""
-    if (args.size > 1 && args[0] == "-in") {
-        fileIn = args[1]
-    } else if (args.size > 3 && args[2] == "-in") {
-        fileIn = args[3]
-    }
-    if (args.size > 1 && args[0] == "-out") {
-        fileOut = args[1]
-    } else if (args.size > 3 && args[2] == "-out") {
-        fileOut = args[3]
-    }
-    return Pair(fileIn, fileOut)
-}
-
 fun main(args: Array<String>) {
     val files = parseArgs(args)
-    if (files.first.isBlank() || files.second.isBlank()) return
     val inputFile = File(files.first)
+    val outputFile = File(files.second)
+
     val myImage: BufferedImage = ImageIO.read(inputFile)
     for (x in 0 until myImage.width) {
         for (y in 0 until myImage.height) {
@@ -47,6 +33,5 @@ fun main(args: Array<String>) {
             myImage.setRGB(x, y, colorNew.rgb)
         }
     }
-    val outputFile = File(files.second)
     ImageIO.write(myImage, "png", outputFile)
 }
